@@ -18,12 +18,24 @@ public class AuthorController {
     AuthorServiceImpl authorService;
 
     @GetMapping
-    public ResponseEntity<?> getAllAuthor() {
-        List<Author> authors = authorService.getAllAuthor();
-        if (authors.isEmpty()) {
-            return new ResponseEntity<>("Author list is empty", HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> getAllAuthor(@RequestParam(required = false) Long id) {
+
+        if (id == null) {
+            List<Author> authors = authorService.getAllAuthor();
+            if (authors.isEmpty()) {
+                return new ResponseEntity<>("Author list is empty", HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(authors, HttpStatus.OK);
+
+        } else {
+            Author author = authorService.getAuthorByID(id);
+            if (author == null) {
+                return new ResponseEntity<>("Author not found!", HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity<>(author, HttpStatus.OK);
         }
-        return new ResponseEntity<>(authors, HttpStatus.OK);
+
 
     }
 
@@ -32,16 +44,16 @@ public class AuthorController {
         return new ResponseEntity<>(authorService.createAuthor(author), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getAuthorByID(@PathVariable("id") Long id) {
-        Author author = authorService.getAuthorByID(id);
-
-        if (author == null) {
-            return new ResponseEntity<>("Author not found!", HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(author, HttpStatus.OK);
-    }
+//    @GetMapping
+//    public ResponseEntity<?> getAuthorByID(@RequestParam Long id) {
+//        Author author = authorService.getAuthorByID(id);
+//
+//        if (author == null) {
+//            return new ResponseEntity<>("Author not found!", HttpStatus.NOT_FOUND);
+//        }
+//
+//        return new ResponseEntity<>(author, HttpStatus.OK);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateAuthorByID(@RequestBody Author author, @PathVariable("id") Long id) {
