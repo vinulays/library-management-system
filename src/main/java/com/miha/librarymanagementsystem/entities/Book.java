@@ -20,9 +20,8 @@ public class Book {
     @Column(name = "title")
     private String title;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private Author author;
+    @Column(name = "author")
+    private String author;
 
     @Column(name = "genre")
     private String genre;
@@ -30,7 +29,7 @@ public class Book {
     @Column(name = "price")
     private double price;
 
-    @Column(name = "isAvailable")
-    private boolean isAvailable;
+    @Column(name = "available")
+    private boolean available;
 
 }
